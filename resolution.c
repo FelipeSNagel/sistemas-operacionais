@@ -22,14 +22,10 @@ int main(void) {
 
 
     return 1;
-    
-
 }
 
 void sleep() {
-    int multiply = rand() % 1000;
-
-    for(int i=0; i< 10000000 * multiply; ++i); // just for wasting some time
+    for(int i=0; i< 1000; ++i); // just for wasting some time
 }
 
 void *thread1(void *data){
@@ -39,15 +35,16 @@ void *thread1(void *data){
 
      while(whileExecute) {
     
+
         if(pthread_mutex_trylock(&mutex1) == 0) {
 
-            printf("Thread ID%ld got mutex1.\n", pthread_self());
+            printf("1 - Thread ID%ld got mutex1.\n", pthread_self());
 
             sleep();
 
             if(pthread_mutex_trylock(&mutex2)==0) {
 
-                printf("Thread ID%ld got mutex2.\n", pthread_self());      
+                printf("1 - Thread ID%ld got mutex2.\n", pthread_self());      
 
                 sleep();
                 
@@ -58,14 +55,14 @@ void *thread1(void *data){
             
             } else  {
             
-                printf("\nThread ID%ld did not get mutex2.\n", pthread_self()); 
+                printf("\n1 - Thread ID%ld did not get mutex2.\n", pthread_self()); 
                 pthread_mutex_unlock(&mutex1);
             
             }        
             
         } else { 
         
-            printf("\nThread ID%ld did not get mutex1.\n", pthread_self()); 
+            printf("\n1 - Thread ID%ld did not get mutex1.\n", pthread_self()); 
 
         }
      }
@@ -80,16 +77,17 @@ void *thread2(void *data) {
     while(whileExecute) {
 
         unsigned long i,j;
+
         
         if(pthread_mutex_trylock(&mutex2)==0) {
 
-            printf("Thread ID%ld got mutex2.\n", pthread_self());
+            printf("2 - Thread ID%ld got mutex2.\n", pthread_self());
             
             sleep();
 
             if(pthread_mutex_trylock(&mutex1)==0) {
 
-                printf("Thread ID%ld got mutex1.\n", pthread_self());          
+                printf("2 - Thread ID%ld got mutex1.\n", pthread_self());          
                 
                 sleep();
                 
@@ -98,9 +96,10 @@ void *thread2(void *data) {
 
                 whileExecute = 0;
 
+
             } else { 
                 
-                printf("\nThread ID%ld did not get mutex1.\n", pthread_self()); 
+                printf("\n2 - Thread ID%ld did not get mutex1.\n", pthread_self()); 
                 pthread_mutex_unlock(&mutex2);
                 
             }
@@ -108,7 +107,7 @@ void *thread2(void *data) {
         
         } else { 
 
-            printf("\nThread ID%ld did not get mutex2.\n", pthread_self()); 
+            printf("\n2 - Thread ID%ld did not get mutex2.\n", pthread_self()); 
 
         }
 
